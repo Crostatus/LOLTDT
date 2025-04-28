@@ -12,7 +12,7 @@ function validateConfig(config: Config): void {
         throw new Error("API key mancante o vuota nel config.json");
     }
 
-    const seenTeamNames = new Set<string>();
+    const seenTeamNames = new Set<string>();    
 
     for (const team of config.teams) {
         if (!team.name || team.name.trim() === "") {
