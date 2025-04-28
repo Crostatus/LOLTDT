@@ -1,0 +1,10 @@
+{
+    "apiKey": "YOUR_API_KEY_HERE",
+    "region": "EUW",
+    "teams": [
+      {
+        "name": "Team Alpha",
+        "members": ["Crostatus"]
+      }
+    ]
+}
