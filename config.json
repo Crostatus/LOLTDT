@@ -1,5 +1,6 @@
 {
     "apiKey": "YOUR_API_KEY_HERE",
+    "maxWebApiCallAttempts": 3,
     "region": "EUW",
     "teams": [
       {

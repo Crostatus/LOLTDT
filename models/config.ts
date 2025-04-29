@@ -5,6 +5,7 @@ export interface Team {
   
 export interface Config {
     apiKey: string;
+    maxWebApiCallAttempts: number;
     region: string;
     teams: Team[];
 }

@@ -1,5 +1,6 @@
 import { loadConfig } from "./lib/configManager.ts";
 import { Log } from "./lib/loggers.ts";
+import { RateLimitedRiotApiClient } from "./lib/rateLimitedRiotApiClient.ts";
 
 async function main() {
     try {
@@ -13,7 +14,12 @@ async function main() {
         // Controlla per tutti gli usernames:        
         // Se non esiste <nome, id> -> chiedi a riot e aggiungi e aggiorna JSON
 
-        
+        const riotApiClient = new RateLimitedRiotApiClient(
+            config.apiKey,
+            20, 1000,      // 20 req/secondo
+            100, 120000,   // 100 req/2 minuti
+            config.maxWebApiCallAttempts
+        );
 
 
     } catch (error) {    
