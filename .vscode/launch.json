@@ -1,24 +1,13 @@
 {
-    // Usare IntelliSense per informazioni sui possibili attributi.
-    // Al passaggio del mouse vengono visualizzate le descrizioni degli attributi esistenti.
-    // Per altre informazioni, visitare: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        {
-            "request": "launch",
-            "name": "Launch default",
-            "type": "node",
-            "program": "${workspaceFolder}/main.ts",
-            "cwd": "${workspaceFolder}",
-            "env": {},
-            "runtimeExecutable": "/opt/homebrew/bin/deno",
-            "runtimeArgs": [
-                "run",
-                "--unstable",
-                "--inspect-wait",
-                "--allow-all"
-            ],
-            "attachSimplePort": 9229
-        }
+      {
+        "name": "Debug Deno via Task",
+        "type": "pwa-node",
+        "request": "attach",
+        "port": 9229,
+        "preLaunchTask": "Run Deno (dev mode)"
+      }
     ]
-}
+  }
+  
