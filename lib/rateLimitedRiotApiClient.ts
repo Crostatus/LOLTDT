@@ -8,6 +8,7 @@ export class RateLimitedRiotApiClient {
   
     constructor(
       private apiKey: string,
+      public region: string,
       private shortWindowLimit: number,
       private shortWindowMs: number,
       private longWindowLimit: number,

@@ -1,7 +1,12 @@
 import { Config } from "../models/config.ts";
+import { UserState } from "../models/state.ts";
+import { Log } from "./loggers.ts";
+
+const CONFIG_FILE = "./config.json";
+
 
 export async function loadConfig(): Promise<Config> {
-    const configText = await Deno.readTextFile("./config.json");
+    const configText = await Deno.readTextFile(CONFIG_FILE);
     const config: Config = JSON.parse(configText);
     validateConfig(config);
     return config;
@@ -36,3 +41,5 @@ function validateConfig(config: Config): void {
         }
     }
 }
+
+

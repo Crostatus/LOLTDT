@@ -6,3 +6,9 @@ export interface UserState {
 export interface State {
     users: Record<string, UserState>;
 }
+
+export interface RiotAccountMinimal {
+    puuid: string;
+    gameName: string;
+    tagLine: string;
+}
