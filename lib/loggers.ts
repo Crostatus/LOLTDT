@@ -11,7 +11,7 @@ export class Log {
     }
 
     static warn(...args: unknown[]) {
-        console.log(yellow("⚠️ " + Log.format(args)));
+        console.log(yellow("🟡 " + Log.format(args)));
     }
 
     static error(...args: unknown[]) {

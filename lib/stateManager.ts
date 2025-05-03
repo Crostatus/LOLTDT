@@ -41,8 +41,7 @@ export async function findMissingUsersUUID(client: RateLimitedRiotApiClient, use
         updateNeeded = true;
         try {
             const data : RiotAccountMinimal = await client.get(`${RIOT_WEBAPI_ROUTES.PUUID_BY_NAME}/${encodeURIComponent(name)}/${encodeURIComponent(client.region)}`) ;
-
-            console.log(data)
+            
             state.users[name] = {
                 id: data.puuid,
                 lastUpdated: new Date().toISOString(),

@@ -19,37 +19,30 @@ export async function fetchMatchIds(
 export async function prepareMatchAnalysis(
     state: State,
     client: RateLimitedRiotApiClient,
-    queueId: number
+    queueId: number,
   ): Promise<{ hasNewMatches: boolean; cachePath: string }> {
-    const matchIdCounter = new Map<string, number>();
+    const allMatchIds = new Set<string>();
   
     for (const [username, { id: puuid }] of Object.entries(state.users)) {
-      Log.info(`🔍 Fetching match IDs for ${username}...`);
+      Log.info(`📡 Fetching match IDs for ${username}...`);
       const matchIds = await fetchMatchIds(puuid, client, queueId);
-  
-      for (const id of matchIds) {
-        matchIdCounter.set(id, (matchIdCounter.get(id) ?? 0) + 1);
-      }
+      matchIds.forEach(id => allMatchIds.add(id));
     }
   
-    const relevantMatches: string[] = [];
+    const matchesToAnalyze = Array.from(allMatchIds).filter(
+      id => !state.analyzedMatches.includes(id)
+    );
   
-    for (const [id, count] of matchIdCounter.entries()) {
-      const alreadyAnalyzed = state.analyzedMatches.includes(id);
-      if (count > 1 && !alreadyAnalyzed) {
-        relevantMatches.push(id);
-      }
-    }
-  
-    if (relevantMatches.length === 0) {
-      Log.info("No new relevant matches to analyze.");
+    if (matchesToAnalyze.length === 0) {
+      Log.info("No new matches to analyze.");
       return { hasNewMatches: false, cachePath: MATCH_CACHE_FILE };
     }
   
     await ensureDir("./cache");
-    const sorted = Array.from(new Set(relevantMatches)).sort();
+    const sorted = matchesToAnalyze.sort();
     await Deno.writeTextFile(MATCH_CACHE_FILE, JSON.stringify(sorted, null, 2));
   
-    Log.success(`💾 Cached ${sorted.length} relevant match IDs in ${MATCH_CACHE_FILE}`);
+    Log.success(`Cached ${sorted.length} new match IDs to ${MATCH_CACHE_FILE}`);
+  
     return { hasNewMatches: true, cachePath: MATCH_CACHE_FILE };
   }

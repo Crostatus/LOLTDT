@@ -37,7 +37,9 @@ async function main() {
         }
 
         const { hasNewMatches, cachePath } = await prepareMatchAnalysis(state, riotApiClient, FLEX_GAME_QUEUE_ID)
-        
+        if(hasNewMatches) {
+            // Go ask match data
+        }
 
 
     } catch (error) {    
