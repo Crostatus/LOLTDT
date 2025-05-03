@@ -5,6 +5,7 @@ export interface UserState {
   
 export interface State {
     users: Record<string, UserState>;
+    analyzedMatches: string[];
 }
 
 export interface RiotAccountMinimal {

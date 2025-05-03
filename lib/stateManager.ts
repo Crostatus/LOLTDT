@@ -11,7 +11,7 @@ export async function loadState(): Promise<State> {
   
       if(!text.trim()) {
         Log.warn(`${STATE_FILE} empty. Returning an initial empty state.`);
-        return { users: {} };
+        return { users: {}, analyzedMatches: []};
       }  
 
       const parsed = JSON.parse(text) as State;
@@ -24,7 +24,7 @@ export async function loadState(): Promise<State> {
     } catch (error) {
         if (error instanceof Deno.errors.NotFound) {
             Log.warn(`No ${STATE_FILE} found. Returning an initial empty state.`);
-            return { users: {} };
+            return { users: {}, analyzedMatches: [] };
         }         
         throw error;
     }
@@ -42,9 +42,10 @@ export async function findMissingUsersUUID(client: RateLimitedRiotApiClient, use
         try {
             const data : RiotAccountMinimal = await client.get(`${RIOT_WEBAPI_ROUTES.PUUID_BY_NAME}/${encodeURIComponent(name)}/${encodeURIComponent(client.region)}`) ;
 
+            console.log(data)
             state.users[name] = {
                 id: data.puuid,
-                lastUpdated: "",
+                lastUpdated: new Date().toISOString(),
             }
             Log.success(`📡 Summoner: ${name}, puuid: ${data.puuid}`);
 

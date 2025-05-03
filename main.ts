@@ -1,4 +1,5 @@
 import { loadConfig } from "./lib/configManager.ts";
+import { FLEX_GAME_QUEUE_ID, prepareMatchAnalysis } from "./lib/gameManager.ts";
 import { Log } from "./lib/loggers.ts";
 import { RateLimitedRiotApiClient } from "./lib/rateLimitedRiotApiClient.ts";
 import { findMissingUsersUUID, loadState, saveState } from "./lib/stateManager.ts";
@@ -34,6 +35,10 @@ async function main() {
             await saveState(state);
             Log.success("📝 Updated state saved");
         }
+
+        const { hasNewMatches, cachePath } = await prepareMatchAnalysis(state, riotApiClient, FLEX_GAME_QUEUE_ID)
+        
+
 
     } catch (error) {    
         if (error instanceof Error) {
