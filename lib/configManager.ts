@@ -1,6 +1,4 @@
 import { Config } from "../models/config.ts";
-import { UserState } from "../models/state.ts";
-import { Log } from "./loggers.ts";
 
 const CONFIG_FILE = "./config.json";
 
@@ -28,9 +26,9 @@ function validateConfig(config: Config): void {
         }
         seenTeamNames.add(team.name);
 
-        if (team.members.length !== 5) {
-            throw new Error(`Il team "${team.name}" deve avere esattamente 5 membri.`);
-        }
+        // if (team.members.length !== 5) {
+        //     throw new Error(`Il team "${team.name}" deve avere esattamente 5 membri.`);
+        // }
 
         const seenMembers = new Set<string>();
         for (const member of team.members) {
