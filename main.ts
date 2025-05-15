@@ -4,6 +4,7 @@ import { Log } from "./lib/loggers.ts";
 import { RateLimitedRiotApiClient } from "./lib/rateLimitedRiotApiClient.ts";
 import { findMissingUsersUUID, loadState, saveState } from "./lib/stateManager.ts";
 
+// Program to read LoL game statistics... WIP
 async function main() {
     try {
         Log.info("Starting...");
