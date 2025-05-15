@@ -1,5 +1,5 @@
 import { loadConfig } from "./lib/configManager.ts";
-import { FLEX_GAME_QUEUE_ID, prepareMatchAnalysis } from "./lib/gameManager.ts";
+import { analyzeMatchesFromCache, FLEX_GAME_QUEUE_ID, prepareMatchAnalysis } from "./lib/gameManager.ts";
 import { Log } from "./lib/loggers.ts";
 import { RateLimitedRiotApiClient } from "./lib/rateLimitedRiotApiClient.ts";
 import { findMissingUsersUUID, loadState, saveState } from "./lib/stateManager.ts";
@@ -37,9 +37,23 @@ async function main() {
             Log.success("📝 Updated state saved");
         }
 
-        const { hasNewMatches, cachePath } = await prepareMatchAnalysis(state, riotApiClient, FLEX_GAME_QUEUE_ID)
+        const trackedUsers: { summonerName: string; puuid: string }[] = [];
+        for (const name of new Set(config.teams.flatMap(t => t.members))) {
+            const entry = state.users[name];
+            if (!entry || !entry.id) {
+                Log.warn(`No PUUID available for ${name}, skipping.`);
+                continue;
+            }
+            console.log('ciao');
+            console.log(name);
+            trackedUsers.push({ summonerName: name, puuid: entry.id });
+        }               
+
+        const { hasNewMatches, cachePath } = await prepareMatchAnalysis(trackedUsers, state.analyzedMatches, riotApiClient, FLEX_GAME_QUEUE_ID)
         if(hasNewMatches) {
             // Go ask match data
+            await analyzeMatchesFromCache(state, config, riotApiClient, cachePath);
+            await saveState(state);
         }
 
 
